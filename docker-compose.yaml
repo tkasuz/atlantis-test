@@ -2,15 +2,21 @@ services:
   localstack:
     container_name: localstack
     image: localstack/localstack
+    networks:
+      - default
     ports:
       - "127.0.0.1:4566:4566"            
       - "127.0.0.1:4510-4559:4510-4559"
+    expose:
+      - "4566"
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
   state:
     image: amazon/aws-cli:latest
+    networks:
+      - default
     depends_on:
       - localstack
     entrypoint: >
@@ -21,3 +27,7 @@ services:
       AWS_ACCESS_KEY_ID: mock_access_key
       AWS_SECRET_ACCESS_KEY: mock_secret_key
       AWS_DEFAULT_REGION: us-east-1
+
+networks:
+  default:
+    driver: bridge
