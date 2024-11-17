@@ -1,11 +1,19 @@
 terraform {
   backend "s3" {
-    bucket           = "terraform-state"
-    key              = "terraform.tfstate"
-    region           = "us-east-1"
-    endpoint         = "http://localhost:4566"
-    sts_endpoint     = "http://localhost:4566"
-    force_path_style = true
+    access_key                  = "mock_access_key"
+    s3_use_path_style           = true
+    secret_key                  = "mock_secret_key"
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_requesting_account_id  = true
+    bucket                      = "terraform-state"
+    key                         = "terraform.tfstate"
+    region                      = "us-east-1"
+    sts_endpoint                = "http://localhost:4566"
+    force_path_style            = true
+    endpoints {
+      s3 = "http://localhost:4566"
+    }
   }
   required_providers {
     aws = {
