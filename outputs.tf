@@ -1,3 +1,3 @@
 output "test" {
-  value = random_id.test.hex
+  value = random_id.atlantis.hex
 }
