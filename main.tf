@@ -1,3 +1,5 @@
-resource "random_id" "test" {
-  byte_length = 8
+resource "aws_ssm_parameter" "bar" {
+  name  = "foo"
+  type  = "String"
+  value = "bar"
 }

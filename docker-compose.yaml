@@ -1,0 +1,25 @@
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            
+      - "127.0.0.1:4510-4559:4510-4559"
+    expose:
+      - "4566"
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+  state:
+    image: amazon/aws-cli:latest
+    depends_on:
+      - localstack
+    entrypoint: >
+      aws --endpoint-url=http://localstack:4566 s3 mb s3://terraform-state &&
+      echo 'Bucket created successfully!';
+      "
+    environment:
+      AWS_ACCESS_KEY_ID: mock_access_key
+      AWS_SECRET_ACCESS_KEY: mock_secret_key
+      AWS_DEFAULT_REGION: us-east-1
